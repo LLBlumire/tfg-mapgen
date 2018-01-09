@@ -222,33 +222,39 @@ fn main() {
     let _ = args.next();
     let file_path = args.next().unwrap();
     let num_villages = args.next().unwrap().trim().parse::<usize>().unwrap();
-
+    let output_path = args.next().unwrap();
 
     let mut file = File::open(file_path).unwrap();
     let mut input = String::new();
     file.read_to_string(&mut input).unwrap();
 
     let mut map = Map::new();
-    let mut input: Input = toml::from_str(&input).unwrap();
+    let input: Input = toml::from_str(&input).unwrap();
     let mut ants: Vec<Ant> = Vec::new();
 
-    let mut tiles: HashMap<String, RcMut<TileInput>> = input
+    let tiles: HashMap<String, RcMut<TileInput>> = input
         .tiles
         .into_iter()
         .map(|tile| (tile.name.clone(), Rc::new(RefCell::new(tile))))
         .collect();
 
-    let mut village: RcMut<TileInput> = Rc::clone(
+    let village: RcMut<TileInput> = Rc::clone(
         tiles
             .values()
             .filter(|v| v.borrow().village)
             .next()
             .unwrap(),
     );
-    let mut tower: RcMut<TileInput> =
-        Rc::clone(tiles.values().filter(|v| v.borrow().tower).next().unwrap());
+    // // Forcing tower spawn is not yet guarunteed
+    // let tower: RcMut<TileInput> = Rc::clone(
+    //    tiles
+    //        .values()
+    //        .filter(|v| v.borrow().tower)
+    //        .next()
+    //        .unwrap()
+    // );
 
-    let mut corruption: RcMut<TileInput> = Rc::clone(
+    let corruption: RcMut<TileInput> = Rc::clone(
         tiles
             .values()
             .filter(|v| v.borrow().corruption)
@@ -300,10 +306,9 @@ fn main() {
     }
 
     // Move Ants, Generating Terrain, Until Map Full
-    let mut progress = num_villages + 9;
     {
         println!("Moving Ants");
-        while (!map.is_full()) {
+        while !map.is_full() {
             for ant in ants.iter_mut() {
                 let source = Rc::clone(
                     tiles
@@ -315,7 +320,6 @@ fn main() {
                 let next_loc = source.borrow().roll(rng, &tiles, &corruption);
                 if map.check_put(ant.x, ant.y, next_loc.borrow().deref().into()) {
                     next_loc.borrow_mut().limit -= 1;
-                    progress += 1;
                 }
             }
         }
@@ -342,7 +346,7 @@ fn main() {
                 }
             }
         }
-        imagebuf.save("image.png");
+        imagebuf.save(output_path).unwrap();
     }
 
 }
