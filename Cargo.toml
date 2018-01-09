@@ -1,5 +1,5 @@
 [package]
-name = "tog-mapgen"
+name = "tfg-mapgen"
 version = "0.1.0"
 authors = ["Lucille Blumire <llblumire@gmail.com>"]
 
