@@ -1,0 +1,11 @@
+[package]
+name = "tog-mapgen"
+version = "0.1.0"
+authors = ["Lucille Blumire <llblumire@gmail.com>"]
+
+[dependencies]
+image = "*"
+rand = "*"
+serde = "*"
+serde_derive = "*"
+toml = "*"

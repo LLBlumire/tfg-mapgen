@@ -1,0 +1,13 @@
+[[tile]]
+name = "name"
+color = "#ffffff"
+limit = 12
+nextgen = [{
+    name = "name"
+    lower = 1
+    upper = 5
+}, {
+    name = "foo"
+    lower = 6
+    upper = 20
+}]

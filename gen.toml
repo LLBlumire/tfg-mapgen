@@ -1,0 +1,174 @@
+[[tile]]
+name = "settlement"
+color = "#FFC107"
+limit = 10
+village = true
+nextgen = [
+    { name = "grass", lower = 3, upper = 10},
+    { name = "forest", lower = 11, upper = 16},
+    { name = "lake", lower = 17, upper = 18},
+    { name = "mountains", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "grass"
+color = "#8bc34a"
+limit = 80
+nextgen = [
+    { name = "grass", lower = 2, upper = 10},
+    { name = "hamlet", lower = 11, upper = 11},
+    { name = "forest", lower = 12, upper = 14},
+    { name = "settlement", lower = 15, upper = 15},
+    { name = "mine", lower = 16, upper = 17},
+    { name = "mountains", lower = 18, upper = 18},
+    { name = "marsh", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "hamlet"
+color = "#689F38"
+limit = 20
+nextgen = [
+    { name = "grass", lower = 2, upper = 11},
+     { name = "forest", lower = 12, upper = 15},
+     { name = "mine", lower = 16, upper = 17},
+    { name = "mountains", lower = 18, upper = 18},
+    { name = "marsh", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "forest"
+color = "#4caf50"
+limit = 110
+nextgen = [
+    { name = "forest", lower = 2, upper = 10},
+    { name = "grass", lower = 11, upper = 15},
+    { name = "mountains", lower = 16, upper = 17},
+    { name = "camp", lower = 18, upper = 18},
+    { name = "marsh", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "camp"
+color = "#388e3c"
+limit = 10
+nextgen = [
+    { name = "forest", lower = 2, upper = 10},
+    { name = "grass", lower = 11, upper = 15},
+    { name = "mountains", lower = 16, upper = 18},
+    { name = "marsh", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "mountains"
+color = "#9e9e9e"
+limit = 39
+nextgen = [
+    { name = "mountains", lower = 2, upper = 8},
+    { name = "forest", lower = 9, upper = 11},
+    { name = "mine", lower = 12, upper = 12},
+    { name = "tundra", lower = 13, upper = 14},
+    { name = "lake", lower = 15, upper = 15},
+    { name = "fort", lower = 16, upper = 18}, 
+    { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "fort"
+color = "#616161"
+limit = 5
+nextgen = [
+    { name = "mountains", lower = 2, upper = 8},
+    { name = "forest", lower = 9, upper = 11},
+    { name = "mine", lower = 12, upper = 12},
+    { name = "tundra", lower = 13, upper = 14},
+    { name = "lake", lower = 15, upper = 18},
+     { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "mine"
+color = "#212121"
+limit = 25
+nextgen = [
+    { name = "mountains", lower = 2, upper = 8},
+    { name = "hamlet", lower = 9, upper = 10},
+    { name = "grass", lower = 11, upper = 13},
+    { name = "tundra", lower = 14, upper = 16},
+    { name = "fort", lower = 17, upper = 18},
+    { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "lake"
+color = "#03a9fa"
+limit = 10
+nextgen = [
+    { name = "marsh", lower = 2, upper = 10},
+    { name = "lake", lower = 11, upper = 12},
+    { name = "forest", lower = 13, upper = 15},
+    { name = "camp", lower = 16, upper = 16},
+    { name = "hamlet", lower = 17, upper = 17},
+    { name = "settlement", lower = 18, upper = 18},
+    { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "marsh"
+color = "#009688"
+limit = 30
+nextgen = [
+    { name = "marsh", lower = 2, upper = 10},
+    { name = "forest", lower = 11, upper = 15},
+    { name = "lake", lower = 16, upper = 19}
+]
+
+[[tile]]
+name = "tundra"
+color = "#eeeeee"
+limit = 30
+nextgen = [
+    { name = "tundra", lower = 2, upper = 12},
+    { name = "mountains", lower = 13, upper = 17},
+    { name = "corruption", lower = 18, upper = 18},
+    { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "corruption"
+color = "#673ab7"
+limit = 399
+corruption = true
+nextgen = [
+    { name = "corruption", lower = 2, upper = 18},
+    { name = "tower", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "tower"
+color = "#512da8"
+limit = 1
+tower = true
+nextgen = [
+    { name = "corruption", lower = 2, upper = 19}
+]
+
+[[tile]]
+name = "spring"
+color = "#3f51b5"
+limit = 1
+nextgen = [
+    { name = "marsh", lower = 2, upper = 10},
+    { name = "lake", lower = 11, upper = 12},
+    { name = "forest", lower = 12, upper = 15},
+    { name = "camp", lower = 16, upper = 16},
+    { name = "hamlet", lower = 17, upper = 17},
+    { name = "settlement", lower = 18, upper = 18},
+    { name = "poi", lower = 19, upper = 19}
+]
+
+[[tile]]
+name = "poi"
+color = "#ffff00"
+limit = 10
+nextgen = []
