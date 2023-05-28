@@ -5,17 +5,17 @@ extern crate image;
 extern crate rand;
 extern crate toml;
 
-use rand::Rng;
-use rand::thread_rng;
-use std::fs::File;
-use std::env::args;
-use std::io::Read;
-use image::Rgb;
-use std::collections::HashMap;
-use std::rc::Rc;
-use std::cell::RefCell;
-use std::ops::Deref;
 use image::ImageBuffer;
+use image::Rgb;
+use rand::thread_rng;
+use rand::{seq::SliceRandom, Rng};
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::env::args;
+use std::fs::File;
+use std::io::Read;
+use std::ops::Deref;
+use std::rc::Rc;
 
 type Color = Rgb<u8>;
 type RcMut<T> = Rc<RefCell<T>>;
@@ -25,11 +25,11 @@ fn false_v() -> bool {
 }
 
 fn d20<R: Rng>(r: &mut R) -> usize {
-    r.gen_range(1, 21)
+    r.gen_range(1..=20)
 }
 
 fn d4<R: Rng>(r: &mut R) -> usize {
-    r.gen_range(1, 5)
+    r.gen_range(1..=4)
 }
 
 fn d4_to_dx(n: usize) -> isize {
@@ -54,13 +54,11 @@ fn d4_to_dy(n: usize) -> isize {
 
 fn hex_to_color(n: &str) -> Color {
     let n = &n[1..];
-    Color {
-        data: [
-            u8::from_str_radix(&n[0..2], 16).unwrap(),
-            u8::from_str_radix(&n[2..4], 16).unwrap(),
-            u8::from_str_radix(&n[4..6], 16).unwrap(),
-        ],
-    }
+    Rgb([
+        u8::from_str_radix(&n[0..2], 16).unwrap(),
+        u8::from_str_radix(&n[2..4], 16).unwrap(),
+        u8::from_str_radix(&n[4..6], 16).unwrap(),
+    ])
 }
 
 fn linear_index(x: usize, y: usize, xsize: usize) -> usize {
@@ -99,7 +97,7 @@ impl TileInput {
         let mut target: RcMut<TileInput> = Rc::clone(&corruption);
         loop {
             if r == 1 || r == 20 {
-                target = Rc::clone(rng.choose(&tiles.values().collect::<Vec<_>>()).unwrap());
+                target = Rc::clone(tiles.values().collect::<Vec<_>>().choose(rng).unwrap());
             } else {
                 for gen in self.nextgen.iter() {
                     if r >= gen.lower && r <= gen.upper {
@@ -171,11 +169,11 @@ impl Ant {
         let mut rd;
         while {
             rd = d4(rng);
-            self.x as isize + d4_to_dx(rd) < 1 || self.x as isize + d4_to_dx(rd) > 20 ||
-                self.y as isize + d4_to_dy(rd) < 1 ||
-                self.y as isize + d4_to_dy(rd) > 20
-        }
-        {}
+            self.x as isize + d4_to_dx(rd) < 1
+                || self.x as isize + d4_to_dx(rd) > 20
+                || self.y as isize + d4_to_dy(rd) < 1
+                || self.y as isize + d4_to_dy(rd) > 20
+        } {}
         self.x = (self.x as isize + d4_to_dx(rd)) as usize;
         self.y = (self.y as isize + d4_to_dy(rd)) as usize;
     }
@@ -187,7 +185,9 @@ struct Map {
 }
 impl Map {
     fn new() -> Map {
-        Map { map: vec![None; 20 * 20] }
+        Map {
+            map: vec![None; 20 * 20],
+        }
     }
 
     fn get(&self, x: usize, y: usize) -> Option<&Option<Tile>> {
@@ -271,8 +271,7 @@ fn main() {
             rx = d20(rng);
             ry = d20(rng);
             rx < 2 || rx > 19 || ry < 2 || ry > 19
-        }
-        {}
+        } {}
 
         map.check_put(rx + 1, ry + 1, village.borrow().deref().into());
         map.check_put(rx + 1, ry, village.borrow().deref().into());
@@ -295,8 +294,7 @@ fn main() {
                 rx = d20(rng);
                 ry = d20(rng);
                 map.get(rx, ry).unwrap().is_some()
-            }
-            {}
+            } {}
 
             map.check_put(rx, ry, village.borrow().deref().into());
             village.borrow_mut().limit -= 1;
@@ -333,7 +331,8 @@ fn main() {
             for x in 0..20 {
                 for yi in 0..10 {
                     for xi in 0..10 {
-                        let tile = map.get((x + 1) as usize, (y + 1) as usize)
+                        let tile = map
+                            .get((x + 1) as usize, (y + 1) as usize)
                             .unwrap()
                             .clone()
                             .unwrap();
@@ -348,5 +347,4 @@ fn main() {
         }
         imagebuf.save(output_path).unwrap();
     }
-
 }
